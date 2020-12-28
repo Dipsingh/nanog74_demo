@@ -1,0 +1,1 @@
+neighbor 35.237.127.235 announce route 10.0.0.4 next-hop 10.0.1.7 label [800001 800004]

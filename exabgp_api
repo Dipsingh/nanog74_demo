@@ -1,0 +1,38 @@
+#!/usr/bin/python3
+
+import sys
+import time
+from datetime import timedelta
+from datetime import datetime
+
+messages = list()
+
+ROUTE_CONFIG_FILE = '/Users/dipsingh/PycharmProjects/exabgp/config/routes.log'
+
+def read_conf_file(filename):
+    fileBytePos = 0
+    while True:
+        with open(filename,'r') as fp:
+            fp.seek(fileBytePos)
+            lines = fp.readlines()
+            if lines:
+                line = [l.strip() for l in lines]
+                yield line
+            fileBytePos = fp.tell()
+            fp.flush()
+            time.sleep(2)
+
+def main():
+    now = datetime.now()
+    while True and datetime.now() < now + timedelta(seconds=180):
+        for lines in read_conf_file(ROUTE_CONFIG_FILE):
+            messages.extend(lines)
+            while messages:
+                message = messages.pop(0)
+                sys.stdout.write(str(message)+"\n")
+                sys.stdout.flush()
+                time.sleep(0.3)
+
+
+if __name__ == '__main__':
+    main()
